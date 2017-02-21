@@ -203,6 +203,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-cmake-build-debug
+cmake-build-*
 
 # End of https://www.gitignore.io/api/c++,c,clion,windows,linux,cmake,macos,osx

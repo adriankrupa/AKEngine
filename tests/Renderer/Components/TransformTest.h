@@ -5,8 +5,10 @@
 #ifndef AKENGINE_TRANSFORMTEST_H
 #define AKENGINE_TRANSFORMTEST_H
 
+#include "gtest/gtest.h"
 
-class TransformTest {
+// The fixture for testing class Foo.
+class TransformTest : public ::testing::Test {
 
 };
 

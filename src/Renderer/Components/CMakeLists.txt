@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
-set(SOURCE_FILES Renderer.cpp ../../include/akengine/Renderer/Renderer.h)
+set(SOURCE_FILES Component.cpp ../../../include/akengine/Renderer/Components/Component.h Transform.cpp ../../../include/akengine/Renderer/Components/Transform.h)
 
-add_library(Renderer ${SOURCE_FILES})
-target_link_libraries(Renderer ${glbinding_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glbinding${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_library(Components ${SOURCE_FILES})
+
+add_dependencies(Components glm)
+add_dependencies(Components spdlog)
+
 
 

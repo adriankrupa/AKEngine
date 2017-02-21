@@ -6,11 +6,9 @@
 #define AKENGINE_RENDERERTEST_H
 
 
-
 class RendererTest {
 
 };
-
 
 
 #endif //AKENGINE_RENDERERTEST_H

@@ -1,41 +1,36 @@
-cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.6)
 
-set(SOURCE_FILES AKEngine.cpp ../include/akengine/AKEngine.h)
+include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
-add_library(AKEngine ${SOURCE_FILES})
+############# GLM #############
 
-add_dependencies(AKEngine glm)
-add_dependencies(AKEngine glfw)
-add_dependencies(AKEngine glbinding)
-add_dependencies(AKEngine spdlog)
+set(gtest_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/gtest" CACHE INTERNAL "" FORCE)
+set(gtest_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/gtest" CACHE INTERNAL "" FORCE)
+set(gtest_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gtest/include" CACHE INTERNAL "" FORCE)
+set(gtest_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${gtest_INSTALL_DIR})
+
+message("gtest_PREFIX='${gtest_PREFIX}'")
+message("gtest_INSTALL_DIR='${gtest_INSTALL_DIR}'")
+message("gtest_INCLUDE_DIR='${gtest_INCLUDE_DIR}'")
+message("gtest_CMAKE_ARGS='${gtest_CMAKE_ARGS}'")
+
+ExternalProject_Add(gtest
+        PREFIX ${gtest_PREFIX}
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        INSTALL_DIR ${gtest_INSTALL_DIR}
+        CMAKE_ARGS ${gtest_CMAKE_ARGS}
+        UPDATE_COMMAND ""
+        )
+
+include_directories(${gtest_INCLUDE_DIR})
 
 add_subdirectory(Renderer)
 
-target_link_libraries(AKEngine ${glfw_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glfw3${CMAKE_STATIC_LIBRARY_SUFFIX})
-target_link_libraries(AKEngine ${glbinding_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glbinding${CMAKE_STATIC_LIBRARY_SUFFIX})
-target_link_libraries(AKEngine Renderer)
+set(SOURCE_FILES main.cpp)
 
-if (UNIX AND NOT APPLE)
-    target_link_libraries(AKEngine dl X11 pthread GL m GLU Xrandr Xi Xxf86vm Xcursor Xinerama)
-endif (UNIX AND NOT APPLE)
+add_executable(all_tests ${SOURCE_FILES})
 
-if (APPLE)
-    FIND_LIBRARY(COCOA_LIBRARY Cocoa)
-    FIND_LIBRARY(OPENGL_LIBRARY OpenGL)
-    FIND_LIBRARY(IOKit_LIBRARY IOKit)
-    FIND_LIBRARY(CORE_VIDEO_LIBRARY CoreVideo)
+target_link_libraries(all_tests ${gtest_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+target_link_libraries(all_tests RendererTest)
 
-    message("COCOA_LIBRARY=${COCOA_LIBRARY}")
-    message("OPENGL_LIBRARY=${OPENGL_LIBRARY}")
-    message("IOKit_LIBRARY=${IOKit_LIBRARY}")
-    message("CORE_VIDEO_LIBRARY=${CORE_VIDEO_LIBRARY}")
-
-    target_link_libraries(AKEngine ${COCOA_LIBRARY})
-    target_link_libraries(AKEngine ${OPENGL_LIBRARY})
-    target_link_libraries(AKEngine ${IOKit_LIBRARY})
-    target_link_libraries(AKEngine ${CORE_VIDEO_LIBRARY})
-endif (APPLE)
-
-if (WIN32)
-    target_link_libraries(AKEngine opengl32)
-endif (WIN32)
+add_dependencies(all_tests AKEngine)

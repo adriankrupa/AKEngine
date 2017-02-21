@@ -6,11 +6,9 @@
 #define AKENGINE_COMPONENTTEST_H
 
 
-
 class ComponentTest {
 
 };
-
 
 
 #endif //AKENGINE_COMPONENTTEST_H

@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
-set(SOURCE_FILES Component.cpp ../../../include/akengine/Renderer/Components/Component.h Transform.cpp ../../../include/akengine/Renderer/Components/Transform.h)
+set(SOURCE_FILES ComponentTest.cpp ComponentTest.h TransformTest.cpp TransformTest.h)
 
-add_library(Components ${SOURCE_FILES})
+add_library(ComponentsTest ${SOURCE_FILES})
+
+add_dependencies(ComponentsTest glm)
+add_dependencies(ComponentsTest spdlog)
 
 

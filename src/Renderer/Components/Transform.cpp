@@ -13,7 +13,7 @@ Transform::Transform() : Component() {
     this->scale = vec3(1.0f, 1.0f, 1.0f);
     this->rotation = quat(1.0f, 0.0f, 0.0f, 0.0f);
     transformChanged = true;
-    localFrameHash = 0;
+//    localFrameHash = 0;
     modelMatrixChanged = false;
 }
 

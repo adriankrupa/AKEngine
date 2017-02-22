@@ -20,7 +20,7 @@ class Transform final: public Component {
 
     mutable bool transformChanged;
     mutable bool modelMatrixChanged;
-    mutable int localFrameHash;
+//    mutable int localFrameHash;
     mutable glm::mat4 cachedModelMatrix;
     mutable glm::mat4 cachedNormalMatrix;
     mutable glm::mat4 cachedViewMatrix;

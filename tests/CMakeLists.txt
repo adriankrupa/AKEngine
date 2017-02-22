@@ -24,13 +24,15 @@ ExternalProject_Add(gtest
 
 include_directories(${gtest_INCLUDE_DIR})
 
-add_subdirectory(Renderer)
-
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp
+        Renderer/RendererTest.h Renderer/RendererTest.cpp
+        Renderer/Components/ComponentTest.h Renderer/Components/ComponentTest.cpp
+        Renderer/Components/TransformTest.h Renderer/Components/TransformTest.cpp)
 
 add_executable(all_tests ${SOURCE_FILES})
 
 target_link_libraries(all_tests ${gtest_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
-target_link_libraries(all_tests RendererTest)
+target_link_libraries(all_tests AKEngine)
 
 add_dependencies(all_tests AKEngine)
+add_dependencies(all_tests gtest)

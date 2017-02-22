@@ -6,7 +6,9 @@
 #define AKENGINE_RENDERERTEST_H
 
 
-class RendererTest {
+#include <gtest/gtest.h>
+
+class RendererTest : public ::testing::Test {
 
 };
 

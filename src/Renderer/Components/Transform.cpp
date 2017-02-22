@@ -2,6 +2,8 @@
 // Created by akrupa on 2017-02-21.
 //
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "akengine/Renderer/Components/Transform.h"
 
 
@@ -95,7 +97,7 @@ std::string Transform::GetName() const {
 void Transform::recomputeMatrices() const {
     if (transformChanged) {
         transformChanged = false;
-//        cachedModelMatrix =  translate(mat4(), position) * mat4_cast(rotation) * glm::scale(mat4(), scale);
+        cachedModelMatrix =  glm::translate(mat4(), position) * mat4_cast(rotation) * glm::scale(mat4(), scale);
         modelMatrixChanged = true;
     }
 }

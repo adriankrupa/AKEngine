@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif //AKENGINE_SCENE_H
+#endif //AKENGINE_SCENE     _H

@@ -4,6 +4,10 @@ set(SOURCE_FILES AKEngine.cpp ../include/akengine/AKEngine.h)
 
 add_library(AKEngine ${SOURCE_FILES})
 
+include_directories(${glm_INCLUDE_DIR})
+include_directories(${glbinding_INCLUDE_DIR})
+include_directories(${spdlog_INCLUDE_DIR})
+
 add_subdirectory(Renderer)
 
 target_link_libraries(AKEngine ${glfw_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glfw3${CMAKE_STATIC_LIBRARY_SUFFIX})

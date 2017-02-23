@@ -5,7 +5,9 @@
 #include <spdlog/spdlog.h>
 
 #include "akengine/Renderer/Components/Component.h"
+#include "akengine/Renderer/GameObject.h"
 
+using namespace std;
 
 bool Component::IsEnabled() const {
     return isEnabled;
@@ -46,6 +48,8 @@ void Component::FixedUpdate(float dt) {
     }
 }
 
+void Component::Init() {}
+
 void Component::AssignGameObject(std::weak_ptr<GameObject> gameObject) {
     if (!gameObject.expired()) {
         this->gameObject = gameObject;
@@ -54,3 +58,13 @@ void Component::AssignGameObject(std::weak_ptr<GameObject> gameObject) {
         this->gameObject = gameObject;
     }
 }
+
+shared_ptr<Transform> Component::GetTransform() const {
+    // Has to be copied into a shared_ptr before usage
+    if (auto spt = gameObject.lock()) {
+        return spt->GetTransform();
+    }
+    return nullptr;
+}
+
+

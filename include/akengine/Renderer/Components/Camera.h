@@ -27,7 +27,7 @@ public:
 
     void Clear() const;
 
-    virtual std::string GetName() const override ;
+    virtual std::string GetName() const override;
 
 
 };

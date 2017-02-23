@@ -2,8 +2,9 @@
 // Created by akrupa on 2017-02-21.
 //
 
+#include <akengine/Renderer/GameObject.h>
+#include <akengine/Renderer/Components/Camera.h>
 #include "TransformTest.h"
-
 
 TEST_F(TransformTest, TestDefaultPosition) {
     ASSERT_EQ(transform->getPosition(), glm::vec3(0, 0, 0));

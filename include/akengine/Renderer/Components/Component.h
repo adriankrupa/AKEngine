@@ -10,6 +10,7 @@
 #include <memory>
 
 class GameObject;
+class Transform;
 
 class Component {
 
@@ -20,19 +21,28 @@ public:
     bool IsEnabled() const;
 
     void SetActive(bool active);
-//    Transform* GetTransform() const ;
+
+    std::shared_ptr<Transform> GetTransform() const;
 
     virtual ~Component();
+
     virtual std::string GetName() const = 0;
+
     virtual void Start();
+
     virtual void OnDestroy();
+
     virtual void Update(float dt);
+
     virtual void FixedUpdate(float dt);
 
 protected:
+    virtual void Init();
+
 private:
     bool isEnabled = true;
     std::weak_ptr<GameObject> gameObject;
+
 
     void AssignGameObject(std::weak_ptr<GameObject> gameObject);
 

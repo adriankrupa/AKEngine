@@ -5,6 +5,7 @@
 #ifndef AKENGINE_SCENE_H
 #define AKENGINE_SCENE_H
 
+#include <memory>
 #include <vector>
 
 class GameObject;

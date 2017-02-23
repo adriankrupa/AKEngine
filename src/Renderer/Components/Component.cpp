@@ -16,11 +16,11 @@ void Component::SetActive(bool active) {
 }
 
 Component::~Component() {
-    gameObject = nullptr;
+    gameObject.reset();
 }
 
 void Component::Start() {
-    if (gameObject == nullptr) {
+    if (gameObject.expired()) {
         auto console = spdlog::get("console");
         console->error("Component " + GetName() + " has no game object");
     }
@@ -32,7 +32,7 @@ void Component::OnDestroy() {
 
 void Component::Update(float dt) {
     (void) dt;
-    if (gameObject == nullptr) {
+    if (gameObject.expired()) {
         auto console = spdlog::get("console");
         console->error("Component " + GetName() + " has no game object");
     }
@@ -40,8 +40,17 @@ void Component::Update(float dt) {
 
 void Component::FixedUpdate(float dt) {
     (void) dt;
-    if (gameObject == nullptr) {
+    if (gameObject.expired()) {
         auto console = spdlog::get("console");
         console->error("Component " + GetName() + " has no game object");
+    }
+}
+
+void Component::AssignGameObject(std::weak_ptr<GameObject> gameObject) {
+    if (!gameObject.expired()) {
+        this->gameObject = gameObject;
+        Start();
+    } else {
+        this->gameObject = gameObject;
     }
 }

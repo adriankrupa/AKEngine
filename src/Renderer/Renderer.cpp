@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 
 #include "akengine/Renderer/Renderer.h"
+#include "akengine/Renderer/Scene.h"
 
 using namespace gl;
 using namespace std;
@@ -23,5 +24,11 @@ void Renderer::printContextInfo() {
     console->info("GL_SHADING_LANGUAGE_VERSION: " + string((char *) glGetString(GL_SHADING_LANGUAGE_VERSION)));
 }
 
-void Renderer::updateAndDraw(double deltaTime) {
+void Renderer::setCurrentScene(std::shared_ptr<Scene> scene) {
+    currentScene = scene;
+}
+
+void Renderer::updateAndDraw(float deltaTime) {
+    currentScene->Update(deltaTime);
+    currentScene->Render();
 }

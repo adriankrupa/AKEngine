@@ -5,18 +5,27 @@
 #ifndef AKENGINE_AKENGINE_H
 #define AKENGINE_AKENGINE_H
 
-struct GLFWwindow;
+#include <memory>
+#include "akengine/Renderer/Scene.h"
+#include "akengine/Renderer/GameObject.h"
+#include "akengine/Renderer/Components/Camera.h"
 
+struct GLFWwindow;
 
 class AKEngine {
 
 public:
     ~AKEngine();
+
     int init();
+
     int run();
+
+    void setCurrentScene(std::shared_ptr<Scene> scene);
 
 private:
     GLFWwindow *window;
+    std::shared_ptr<Scene> currentScene;
 
 };
 

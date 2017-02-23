@@ -8,7 +8,11 @@
 
 #include <string>
 
+class GameObject;
+
 class Component {
+
+    friend class GameObject;
 
 public:
 
@@ -26,8 +30,11 @@ public:
 
 protected:
 private:
-    bool isEnabled;
-    void *gameObject;
+    bool isEnabled = true;
+    std::weak_ptr<GameObject> gameObject;
+
+    void AssignGameObject(std::weak_ptr<GameObject> gameObject);
+
 };
 
 

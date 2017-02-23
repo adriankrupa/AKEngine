@@ -7,5 +7,10 @@
 int main() {
     auto engine = new AKEngine();
     engine->init();
+
+    auto scene = std::make_shared<Scene>();
+    scene->AddGameObject(GameObject::CreateCamera());
+    engine -> setCurrentScene(scene);
+
     engine->run();
 }

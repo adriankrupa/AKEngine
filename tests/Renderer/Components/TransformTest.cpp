@@ -428,7 +428,7 @@ TEST_F(TransformTest, TestViewMatrixTransformRotationScale) {
     auto assertMatrix = glm::inverse(assertMatrixTranslation * assertMatrixRotation * assertMatrixScale);
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
-            ASSERT_FLOAT_EQ(modelMatrix[i][j], assertMatrix[i][j]);
+            ASSERT_FLOAT_EQ(viewMatrix[i][j], assertMatrix[i][j]);
         }
     }
 }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
 include_directories(${glm_INCLUDE_DIR})
 
-set(SOURCE_FILES Component.cpp ../../../include/akengine/Renderer/Components/Component.h Transform.cpp ../../../include/akengine/Renderer/Components/Transform.h)
+set(SOURCE_FILES Component.cpp ../../../include/akengine/Renderer/Components/Component.h Transform.cpp ../../../include/akengine/Renderer/Components/Transform.h Camera.cpp ../../../include/akengine/Renderer/Components/Camera.h)
 
 add_library(Components ${SOURCE_FILES})
 

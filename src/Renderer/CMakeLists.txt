@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
-set(SOURCE_FILES Renderer.cpp ../../include/akengine/Renderer/Renderer.h)
+set(SOURCE_FILES
+        Renderer.cpp ../../include/akengine/Renderer/Renderer.h
+        GameObject.cpp ../../include/akengine/Renderer/GameObject.h
+        Scene.cpp ../../include/akengine/Renderer/Scene.h)
 
 add_subdirectory(Components)
 

@@ -13,6 +13,11 @@ void error_callback(int error, const char *description) {
     console->error(std::string(description));
 }
 
+AKEngine::~AKEngine() {
+    glfwDestroyWindow(window);
+    glfwTerminate();
+}
+
 int AKEngine::init() {
     auto console = spdlog::stdout_color_mt("console");
 
@@ -24,15 +29,14 @@ int AKEngine::init() {
     return EXIT_SUCCESS;
 }
 
-AKEngine::~AKEngine() {
-    glfwDestroyWindow(window);
-    glfwTerminate();
+void AKEngine::setCurrentScene(std::shared_ptr<Scene> scene) {
+    currentScene = scene;
 }
 
 int AKEngine::run() {
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -43,17 +47,27 @@ int AKEngine::run() {
         return EXIT_FAILURE;
     }
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
 
 //    glfwSetKeyCallback(window, key_callback);
 
     Renderer *renderer = new Renderer();
     renderer->init();
+    renderer->setCurrentScene(currentScene);
     renderer->printContextInfo();
+
+    auto time = glfwGetTime ();
 
     while (!glfwWindowShouldClose(window)) {
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        auto time2 = glfwGetTime ();
+        auto deltaTime = time2 - time;
+        renderer->updateAndDraw((float)deltaTime);
+
+        time = time2;
+
     }
 
     return EXIT_SUCCESS;

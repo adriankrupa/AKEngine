@@ -14,7 +14,12 @@ add_dependencies(Shaders glm)
 add_dependencies(Shaders spdlog)
 add_dependencies(Shaders glbinding)
 
+add_subdirectory(Unlit)
+
+add_dependencies(Shaders UnlitShaders)
+
 target_link_libraries(Shaders ${glbinding_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glbinding${CMAKE_STATIC_LIBRARY_SUFFIX})
+target_link_libraries(Shaders UnlitShaders)
 
 
 

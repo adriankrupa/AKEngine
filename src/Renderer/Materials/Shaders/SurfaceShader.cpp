@@ -26,8 +26,9 @@ void SurfaceShader::setup() {
         return;
     }
 
-    fragShaderPathname = WorkingDirectory::GetExecutableDirectory()
-                         + shadersDirectory + getShaderName() + ".fsh";
+//    fragShaderPathname = WorkingDirectory::GetExecutableDirectory()
+//                         + shadersDirectory + getShaderName() + ".fsh";
+    fragShaderPathname = getShaderName() + ".fsh";
     if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fragShaderPathname)) {
 //#if !defined(_TEST)
 //        LOG(ERROR) << "Failed to compile fragment shader: " + getShaderName();
@@ -37,6 +38,22 @@ void SurfaceShader::setup() {
     attachShaders(vertShader, fragShader);
 }
 
-void SurfaceShader::setup(std::string vertexShaderString, std::string fragmentShaderString) {
 
+void SurfaceShader::setup(std::string vertexShaderString, std::string fragmentShaderString) {
+    GLuint vertShader, fragShader;
+    glCreateProgram();
+    program = glCreateProgram();
+    if (!compileShader(&vertShader, GL_VERTEX_SHADER, vertexShaderString, "stringShaderVertex")) {
+//#if !defined(_TEST)
+//        LOG(ERROR) << "Failed to compile vertex shader: " + getShaderName();
+//#endif
+        return;
+    }
+    if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fragmentShaderString, "stringShaderFragment")) {
+//#if !defined(_TEST)
+//        LOG(ERROR) << "Failed to compile fragment shader: " + getShaderName();
+//#endif
+        return;
+    }
+    attachShaders(vertShader, fragShader);
 }

@@ -28,7 +28,7 @@ set(SOURCE_FILES main.cpp
         Renderer/RendererTest.h Renderer/RendererTest.cpp
         Renderer/Components/ComponentTest.h Renderer/Components/ComponentTest.cpp
         Renderer/Components/TransformTest.h Renderer/Components/TransformTest.cpp
-        Renderer/GameObjectTest.h Renderer/GameObjectTest.cpp)
+        Renderer/GameObjectTest.h Renderer/GameObjectTest.cpp Renderer/Components/LightTest.cpp Renderer/Components/LightTest.h)
 
 add_executable(all_tests ${SOURCE_FILES})
 

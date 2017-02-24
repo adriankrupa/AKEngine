@@ -30,6 +30,8 @@ class Light : public Component {
 public:
     static std::shared_ptr<Light> createLight();
 
+    static std::shared_ptr<GameObject> createLightObject();
+
     //region Getters
     LightType getLightType() const;
 

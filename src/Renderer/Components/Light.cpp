@@ -4,13 +4,21 @@
 
 #include "akengine/Renderer/Components/Light.h"
 #include "akengine/Renderer/Components/Transform.h"
+#include "akengine/Renderer/GameObject.h"
 
 using namespace glm;
 
 std::shared_ptr<Light> Light::createLight() {
-    auto light = std::shared_ptr<Light>();
+    auto light = std::shared_ptr<Light>(new Light());
     light->Init();
     return light;
+}
+
+std::shared_ptr<GameObject> Light::createLightObject() {
+    auto go = GameObject::CreateGameObject();
+    auto light = std::shared_ptr<Light>(new Light());
+    go->AddComponent(light);
+    return go;
 }
 
 //region Getters
@@ -78,7 +86,11 @@ void Light::setLightColor(vec3 lightColor) {
 //endregion
 
 Light::Light() {
-
+    this->setLightRange(1);
+    this->setLightSpotAngle((float)M_PI_2);
+    this->setLightIntensity(1);
+    this->setLightColor(glm::vec3(1,1,1));
+    this->setLightType(LightType::Point);
 }
 
 void Light::UpdateLightDirection() const {
@@ -87,4 +99,8 @@ void Light::UpdateLightDirection() const {
 
 void Light::UpdateLightPosition() const {
     light.position = GetTransform()->getPosition();
+}
+
+std::string Light::GetName() const {
+    return "Light";
 }

@@ -26,6 +26,8 @@ void Renderer::printContextInfo() {
 
 void Renderer::setCurrentScene(std::shared_ptr<Scene> scene) {
     currentScene = scene;
+    GLuint getProgram();
+
 }
 
 void Renderer::updateAndDraw(float deltaTime) {

@@ -8,7 +8,7 @@ set(SOURCE_FILES
         Component.cpp ../../../include/akengine/Renderer/Components/Component.h
         Transform.cpp ../../../include/akengine/Renderer/Components/Transform.h
         Camera.cpp ../../../include/akengine/Renderer/Components/Camera.h
-        Light.cpp ../../../include/akengine/Renderer/Components/Light.h)
+        Light.cpp ../../../include/akengine/Renderer/Components/Light.h MeshRenderer.cpp ../../../include/akengine/Renderer/Components/MeshRenderer.h)
 
 add_library(Components ${SOURCE_FILES})
 

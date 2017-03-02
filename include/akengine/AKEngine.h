@@ -12,6 +12,8 @@
 
 struct GLFWwindow;
 
+class Renderer;
+
 class AKEngine {
 
 public:
@@ -19,13 +21,18 @@ public:
 
     int init();
 
+    int createWindow();
+    int createHeadlessWindow();
+
     int run();
 
     void setCurrentScene(std::shared_ptr<Scene> scene);
+    void destroyWindow();
 
 private:
     GLFWwindow *window;
     std::shared_ptr<Scene> currentScene;
+    Renderer *renderer;
 
 };
 

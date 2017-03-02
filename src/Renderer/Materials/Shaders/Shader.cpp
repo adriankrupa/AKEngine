@@ -4,9 +4,10 @@
 
 #include <glbinding/gl/gl.h>
 #include <fstream>
-#include <cstring>
+#include <spdlog/spdlog.h>
 
 #include "akengine/Renderer/Materials/Shaders/Shader.h"
+#include "akengine/Utilities/GLDebug.h"
 
 using namespace gl;
 using namespace std;
@@ -27,7 +28,7 @@ GLuint Shader::getProgram() {
     return program;
 }
 
-bool Shader::compileShader(gl::GLuint* shader, gl::GLenum type, std::string filePath) {
+bool Shader::compileShaderFromPath(gl::GLuint* shader, gl::GLenum type, std::string filePath) {
 
     ifstream fileStream;
     fileStream.open(filePath, ios_base::in);
@@ -37,41 +38,48 @@ bool Shader::compileShader(gl::GLuint* shader, gl::GLenum type, std::string file
 
     fileStream.close();
 
-    return compileShader(shader, type, contents, filePath);
+    if (contents.length() <= 0) {
+        auto console = spdlog::get("console");
+        console->error("Failed to load shader: " + filePath);
+        compiled = false;
+        return false;
+    }
 
-
+    return compileShader(shader, type, contents);
 }
 
-bool Shader::compileShader(gl::GLuint* shader, gl::GLenum type, std::string shaderString, std::string filePath) {
+bool Shader::compileShader(gl::GLuint* shader, gl::GLenum type, std::string shaderString) {
     GLint status;
     auto sources = shaderString.c_str();
 
     if (sources == NULL || strlen(sources) <= 0) {
-//        LOG(ERROR) << "Failed to load shader: " + filePath;
+        auto console = spdlog::get("console");
+        console->error("Failed to load shader: " + shaderString);
         compiled = false;
         return false;
     }
-//    string sh = generateShader(shaderString, type);
     auto sh = shaderString;
     const GLchar *source = sh.c_str();
 
     auto shaderInt = glCreateShader(type);
     *shader = shaderInt;
-    glShaderSource(*shader, 1, &source, NULL);
-    glCompileShader(*shader);
+    GL_CHECK(glShaderSource(*shader, 1, &source, NULL));
+    GL_CHECK(glCompileShader(*shader));
 
-#if defined(_DEBUG)
-    GLint logLength;
+
+#ifndef NDEBUG
+        GLint logLength = 0;
         GL_CHECK(glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength));
         if (logLength > 1) {
-            GLchar *log = (GLchar *) malloc(logLength);
+            GLchar *log = (GLchar *) malloc((size_t)logLength);
             GL_CHECK(glGetShaderInfoLog(*shader, logLength, &logLength, log));
-            LOG(ERROR) << "Shader compile log: " << endl << log;
+            auto console = spdlog::get("console");
+            console->error("Shader compile log: " + std::string(log));
             free(log);
         }
 #endif
 
-    glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
+    GL_CHECK(glGetShaderiv(*shader, GL_COMPILE_STATUS, &status));
     if (status == 0) {
         glDeleteShader(*shader);
         compiled = false;
@@ -99,51 +107,66 @@ bool Shader::linkProgram(GLuint prog) {
     return status != 0;
 }
 
-void Shader::attachShaders(GLuint shader1, GLuint shader2) {
+bool Shader::attachShaders(GLuint shader1, GLuint shader2) {
 
     GLuint vertShader = shader1;
     GLuint fragShader = shader2;
 
-    glAttachShader(program, vertShader);
-    glAttachShader(program, fragShader);
+    GL_CHECK(glAttachShader(program, vertShader));
+    GL_CHECK(glAttachShader(program, fragShader));
 
 //    bindAttributeLocations();
 //
-//    if (!linkProgram(m_program)) {
-//        LOG(ERROR) << "Failed to link program: " + getShaderName();
-//
-//        if (vertShader) {
-//            GL_CHECK(glDeleteShader(vertShader));
-//            vertShader = 0;
-//        }
-//        if (fragShader) {
-//            GL_CHECK(glDeleteShader(fragShader));
-//            fragShader = 0;
-//        }
-//        if (m_program) {
-//            GL_CHECK(glDeleteProgram(m_program));
-//            m_program = 0;
-//        }
-//    }
+    if (!linkProgram(program)) {
+        auto console = spdlog::get("console");
+        console->error("Failed to link program: "/* + getShaderName()*/);
+
+        if (vertShader) {
+            GL_CHECK(glDeleteShader(vertShader));
+            vertShader = 0;
+        }
+        if (fragShader) {
+            GL_CHECK(glDeleteShader(fragShader));
+            fragShader = 0;
+        }
+        if (program) {
+            GL_CHECK(glDeleteProgram(program));
+            program = 0;
+        }
+        return false;
+    }
 //
 //    fetchUniformLocations();
 
     if (vertShader) {
-        glDetachShader(program, vertShader);
-        glDeleteShader(vertShader);
+        GL_CHECK(glDetachShader(program, vertShader));
+        GL_CHECK(glDeleteShader(vertShader));
     }
 
     if (fragShader) {
-        glDetachShader(program, fragShader);
-        glDeleteShader(fragShader);
+        GL_CHECK(glDetachShader(program, fragShader));
+        GL_CHECK(glDeleteShader(fragShader));
     }
+    return true;
 }
 
-//string Shader::generateShader(const string shader, const GLenum type) const {
-//    auto s = shader;
-//    auto verBegin = shader.find("#version");
-//    auto verEnd = shader.find("\n", verBegin);
-//    s.erase(verBegin, verEnd + 1);
-//    s.insert(s.begin(), "#version 410\n");
-//    return s;
-//}
+void Shader::fetchUniformLocations() {
+    for (auto &uniform : uniforms) {
+        GL_CHECK_RETURN(GLint pos = glGetUniformLocation(program, uniform.c_str()));
+        if (pos < 0) {
+            auto console = spdlog::get("console");
+            console->warn("Couldn't fetch uniform location: " + uniform);
+        } else {
+            uniformsLocations.insert(pair<string, GLint>(uniform, pos));
+        }
+    }
+    for (auto &uniform : uniformsBlocks) {
+        GL_CHECK_RETURN(GLint pos = glGetUniformBlockIndex(program, uniform.c_str()));
+        if (pos < 0) {
+            auto console = spdlog::get("console");
+            console->warn("Couldn't fetch uniform location: " + uniform);
+        } else {
+            uniformsLocations.insert(pair<string, GLint>(uniform, pos));
+        }
+    }
+}

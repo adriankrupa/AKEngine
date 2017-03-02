@@ -4,7 +4,8 @@ include_directories(${glm_INCLUDE_DIR})
 include_directories(${glbinding_INCLUDE_DIR})
 include_directories(${spdlog_INCLUDE_DIR})
 
-set(SOURCE_FILES "" Material.cpp ../../../include/akengine/Renderer/Materials/Material.h)
+set(SOURCE_FILES
+        Material.cpp ../../../include/akengine/Renderer/Materials/Material.h)
 
 add_library(Materials ${SOURCE_FILES})
 

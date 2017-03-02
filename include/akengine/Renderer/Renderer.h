@@ -11,6 +11,7 @@ class Renderer {
 
     std::shared_ptr<Scene> currentScene;
 
+
 public:
     void init();
 

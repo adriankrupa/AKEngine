@@ -11,8 +11,6 @@ class SurfaceShader : public Shader {
 
     virtual std::string getShaderName() const = 0;
 
-    virtual void bindAttributeLocations() = 0;
-
 public:
     virtual void setup() override;
     virtual void setup(std::string vertexShaderString, std::string fragmentShaderString);

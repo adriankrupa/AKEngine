@@ -28,7 +28,9 @@ set(SOURCE_FILES main.cpp
         Renderer/RendererTest.h Renderer/RendererTest.cpp
         Renderer/Components/ComponentTest.h Renderer/Components/ComponentTest.cpp
         Renderer/Components/TransformTest.h Renderer/Components/TransformTest.cpp
-        Renderer/GameObjectTest.h Renderer/GameObjectTest.cpp Renderer/Components/LightTest.cpp Renderer/Components/LightTest.h)
+        Renderer/GameObjectTest.h Renderer/GameObjectTest.cpp
+        Renderer/Components/LightTest.h Renderer/Components/LightTest.cpp
+        Renderer/Materials/Shaders/ShaderTest.h Renderer/Materials/Shaders/ShaderTest.cpp Renderer/Materials/Shaders/SurfaceShaderTest.cpp Renderer/Materials/Shaders/SurfaceShaderTest.h Renderer/Materials/Shaders/Unlit/UnlitShaderTest.cpp Renderer/Materials/Shaders/Unlit/UnlitShaderTest.h)
 
 add_executable(all_tests ${SOURCE_FILES})
 

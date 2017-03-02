@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(include)
 
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/lib )
 
 
 include_directories(${glfw_INCLUDE_DIR})

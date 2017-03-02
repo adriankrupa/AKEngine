@@ -3,6 +3,8 @@
 //
 
 #include <glbinding/gl/gl.h>
+#include <spdlog/spdlog.h>
+#include <akengine/Utilities/WorkingDirectory.h>
 
 #include "akengine/Renderer/Materials/Shaders/SurfaceShader.h"
 
@@ -17,22 +19,29 @@ void SurfaceShader::setup() {
 
     string shadersDirectory = "/shaders/";
 
-    vertShaderPathname = getShaderName() + ".vsh";
 
-    if (!compileShader(&vertShader, GL_VERTEX_SHADER, vertShaderPathname)) {
-//#if !defined(_TEST)
-//        LOG(ERROR) << "Failed to compile vertex shader: " + getShaderName();
-//#endif
+    vertShaderPathname = WorkingDirectory::GetExecutableDirectory()
+                         + shadersDirectory + getShaderName() + ".vsh";
+//    vertShaderPathname = getShaderName() + ".vsh";
+    vertShaderPathname = "../resources/shaders/unlit/" + getShaderName() + ".vsh";
+
+    if (!compileShaderFromPath(&vertShader, GL_VERTEX_SHADER, vertShaderPathname)) {
+#ifndef NDEBUG
+        auto console = spdlog::get("console");
+        console->error("Failed to compile vertex shader: " + getShaderName());
+#endif
         return;
     }
 
-//    fragShaderPathname = WorkingDirectory::GetExecutableDirectory()
-//                         + shadersDirectory + getShaderName() + ".fsh";
-    fragShaderPathname = getShaderName() + ".fsh";
-    if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fragShaderPathname)) {
-//#if !defined(_TEST)
-//        LOG(ERROR) << "Failed to compile fragment shader: " + getShaderName();
-//#endif
+    fragShaderPathname = WorkingDirectory::GetExecutableDirectory()
+                         + shadersDirectory + getShaderName() + ".fsh";
+    fragShaderPathname = "../resources/shaders/unlit/" + getShaderName() + ".fsh";
+
+    if (!compileShaderFromPath(&fragShader, GL_FRAGMENT_SHADER, fragShaderPathname)) {
+#ifndef NDEBUG
+        auto console = spdlog::get("console");
+        console->error("Failed to compile fragment shader: " + getShaderName());
+#endif
         return;
     }
     attachShaders(vertShader, fragShader);
@@ -43,16 +52,18 @@ void SurfaceShader::setup(std::string vertexShaderString, std::string fragmentSh
     GLuint vertShader, fragShader;
     glCreateProgram();
     program = glCreateProgram();
-    if (!compileShader(&vertShader, GL_VERTEX_SHADER, vertexShaderString, "stringShaderVertex")) {
-//#if !defined(_TEST)
-//        LOG(ERROR) << "Failed to compile vertex shader: " + getShaderName();
-//#endif
+    if (!compileShader(&vertShader, GL_VERTEX_SHADER, vertexShaderString)) {
+#ifndef NDEBUG
+        auto console = spdlog::get("console");
+        console->error("Failed to compile vertex shader: " + getShaderName());
+#endif
         return;
     }
-    if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fragmentShaderString, "stringShaderFragment")) {
-//#if !defined(_TEST)
-//        LOG(ERROR) << "Failed to compile fragment shader: " + getShaderName();
-//#endif
+    if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fragmentShaderString)) {
+#ifndef NDEBUG
+        auto console = spdlog::get("console");
+        console->error("Failed to compile fragment shader: " + getShaderName());
+#endif
         return;
     }
     attachShaders(vertShader, fragShader);

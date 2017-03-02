@@ -9,10 +9,12 @@ include_directories(${glbinding_INCLUDE_DIR})
 include_directories(${spdlog_INCLUDE_DIR})
 
 add_subdirectory(Renderer)
+add_subdirectory(Utilities)
 
 target_link_libraries(AKEngine ${glfw_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glfw3${CMAKE_STATIC_LIBRARY_SUFFIX})
 target_link_libraries(AKEngine ${glbinding_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glbinding${CMAKE_STATIC_LIBRARY_SUFFIX})
 target_link_libraries(AKEngine Renderer)
+target_link_libraries(AKEngine Utilities)
 
 if (UNIX AND NOT APPLE)
     target_link_libraries(AKEngine dl X11 pthread GL m GLU Xrandr Xi Xxf86vm Xcursor Xinerama)

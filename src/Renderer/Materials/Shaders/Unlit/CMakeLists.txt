@@ -4,7 +4,11 @@ include_directories(${glm_INCLUDE_DIR})
 include_directories(${glbinding_INCLUDE_DIR})
 include_directories(${spdlog_INCLUDE_DIR})
 
-set(SOURCE_FILES "")
+set(SOURCE_FILES
+        UnlitShader.cpp ../../../../../include/akengine/Renderer/Materials/Shaders/Unlit/UnlitShader.h)
+
+configure_file(UnlitShader.fsh ${CMAKE_BINARY_DIR}/resources/shaders/unlit/UnlitShader.fsh COPYONLY)
+configure_file(UnlitShader.vsh ${CMAKE_BINARY_DIR}/resources/shaders/unlit/UnlitShader.vsh COPYONLY)
 
 add_library(UnlitShaders ${SOURCE_FILES})
 

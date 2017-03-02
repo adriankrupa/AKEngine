@@ -6,7 +6,7 @@ include_directories(${spdlog_INCLUDE_DIR})
 
 set(SOURCE_FILES
         Shader.cpp ../../../../include/akengine/Renderer/Materials/Shaders/Shader.h
-        SurfaceShader.cpp ../../../../include/akengine/Renderer/Materials/Shaders/SurfaceShader.h)
+        SurfaceShader.cpp ../../../../include/akengine/Renderer/Materials/Shaders/SurfaceShader.h VertexAttrib.h)
 
 add_library(Shaders ${SOURCE_FILES})
 

@@ -28,6 +28,19 @@ GLuint Shader::getProgram() {
     return program;
 }
 
+GLint Shader::getUniformLocation(string const &uniform, bool notifyMissingUniform) const {
+    auto it = uniformsLocations.find(uniform);
+    if (it != uniformsLocations.end()) {
+        return it->second;
+    }
+#ifndef NDEBUG
+    if (notifyMissingUniform) {
+        auto console = spdlog::get("console");
+        console->warn("Couldn't find uniform location: " + uniform);
+    }
+#endif
+    return -1;}
+
 bool Shader::compileShaderFromPath(gl::GLuint* shader, gl::GLenum type, std::string filePath) {
 
     ifstream fileStream;

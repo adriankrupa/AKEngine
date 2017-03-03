@@ -20,6 +20,9 @@ public:
     bool compileShaderT(gl::GLuint *shader, gl::GLenum type, std::string shaderString);
 
     bool attachShadersT(gl::GLuint shader1, gl::GLuint shader2);
+
+protected:
+    void bindAttributeLocations() override;
 };
 
 class ShaderTest : public ::testing::Test {

@@ -14,8 +14,10 @@ add_dependencies(Materials spdlog)
 add_dependencies(Materials glbinding)
 
 add_subdirectory(Shaders)
+add_subdirectory(Meshes)
 
 add_dependencies(Materials Shaders)
+add_dependencies(Materials Meshes)
 
 target_link_libraries(Materials ${glbinding_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}glbinding${CMAKE_STATIC_LIBRARY_SUFFIX})
 target_link_libraries(Materials Shaders)

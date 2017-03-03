@@ -70,6 +70,10 @@ bool ShaderMock::attachShadersT(GLuint shader1, GLuint shader2) {
     return this->attachShaders(shader1, shader2);
 }
 
+void ShaderMock::bindAttributeLocations() {
+
+}
+
 void ShaderTest::SetUp() {
     engine = make_shared<AKEngine>();
     engine->init();

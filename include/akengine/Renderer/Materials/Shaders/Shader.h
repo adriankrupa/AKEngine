@@ -18,6 +18,7 @@ public:
     virtual bool isUsingLight() = 0;
     bool isCompiled();
     gl::GLuint getProgram();
+    gl::GLint getUniformLocation(std::string const& uniform, bool notifyMissingUniform = true) const;
 
 protected:
     gl::GLuint program;
